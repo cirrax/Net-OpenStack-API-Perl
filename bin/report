@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+use Net::OpenStack::Telemetry::Report;
+
+my $report= Net::OpenStack::Report->new( project=> '51ce6d48c52b4f789a7e003a8df4f168', 
+                                         start  => '2014-02-18T09:30:00' , 
+                                         end    => '2014-02-18T23:59:59',
+                                         print_events     => 1,
+                                         print_statistics => 1,
+                                         print_unknown    => 1,
+                                         print_total_stat => 1,
+                                    );
+
+$report->create();
+$report->print_images();
+$report->print_volumes();
+$report->print_instances();
+$report->print_routers();
+$report->print_subnets();
+$report->print_ports();
+$report->print_ipfloat();
+
+$report->print_unknown_ressources();
+

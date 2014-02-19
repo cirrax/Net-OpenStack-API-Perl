@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+use Net::OpenStack::Telemetry::Query;
+use Net::OpenStack::Telemetry;
+use Data::Dumper;
+
+
+my $telemetry= Net::OpenStack::Telemetry->new_from_env();
+my $filter= Net::OpenStack::Telemetry::Filter->new();
+
+
+#print Dumper($telemetry);
+
+#my $res = $telemetry->get_meters('');
+#my $res = $telemetry->get_meters('disk.write.requests', $filter);
+#my $res = $telemetry->get_meters('vcpus', $filter );
+#my $res = $telemetry->get_meters('', $filter->q );
+
+#my $res = $telemetry->get_meters('cpu', $filter->all );
+#my $res = $telemetry->get_meters('volume', $filter->q );
+#my $res = $telemetry->get_statistics( 'volume', $filter2 );
+#my $res = $telemetry->get_statistics( 'cpu', $filter->all);
+
+#my $res = $telemetry->get_resources('', $filter->q);
+
+
+#print Dumper($filter->all);
+print Dumper($res);
+#print Dumper($filter2);
+#print Dumper($telemetry);
+#print Dumper($tenants);
+
+

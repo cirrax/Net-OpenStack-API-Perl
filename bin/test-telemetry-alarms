@@ -1,0 +1,49 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+use Net::OpenStack::Telemetry::Query;
+use Net::OpenStack::Telemetry;
+use Data::Dumper;
+
+my $telemetry= Net::OpenStack::Telemetry->new_from_env();
+
+
+my $res_all = $telemetry->get_alarms('');
+
+# create new Alarm: 
+my $res = $telemetry->put_alarms('', { name => 'testalarm', type => 'threshold', threshold_rule => {
+                                                                            'evaluation_periods' => 1,
+                                                                            'statistic' => 'sum',
+                                                                            'threshold' => '10',
+                                                                            'period' => 60,
+                                                                            'comparison_operator' => 'eq',
+                                                                            'query' => [],
+                                                                            'meter_name' => 'test' },
+                                  });
+
+# get the created alarm
+my $res_get = $telemetry->get_alarms($res->{alarm_id});
+
+# filter the created alarm
+my $filter= Net::OpenStack::Telemetry::Query->new();
+$filter->add_filter('name', 'eq', 'testalarm');
+my $res_filter = $telemetry->get_alarms('', $filter->q);
+
+# get the actual state
+my $res_state = $telemetry->get_state($res->{alarm_id});
+
+# get the state hhistory
+my $res_hist = $telemetry->get_history($res->{alarm_id});
+
+# delete the new Alarm: 
+my $res_del = $telemetry->delete_alarms($res->{alarm_id});
+
+#print Dumper($res_all);
+#print Dumper($res);
+#print Dumper($res_get);
+#print Dumper($res_filter);
+#print Dumper($res_state);
+#print Dumper($res_hist);
+#print Dumper($res_del);
+

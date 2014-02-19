@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+
+use Net::OpenStack::Telemetry;
+use Data::Dumper;
+
+print "This is not yet working\n";
+exit 0;
+
+my $telemetry= Net::OpenStack::Telemetry->new_from_env();
+
+my $samples = { samples => 0 =>[{
+                           id => "caab7dee-98b8-11e3-8746-bc764e050f65",
+                          metadata =>  {
+                                 name1 =>  "value1",
+                                 name2 => "value2"
+                                       },
+                          meter =>  "instance",
+                          project_id =>  "51ce6d48c52b4f789a7e003a8df4f168",
+                         resource_id =>  "a10060be-5ae2-4626-b816-e5b50b3f115a",
+                         source =>  "openstack",
+                         timestamp =>  "2014-02-18T16:21:59.289575",
+                         type => "gauge",
+                         unit =>  "instance",
+                         user_id =>  "efd87807-12d2-4b38-9c70-5f5c2ac427ff",
+                          counter_name => 'instance',
+                         }]
+              } ;
+
+my $res = $telemetry->post_meters('blah', $samples);
+
+print Dumper($samples);
+print Dumper($res);
+

@@ -1,0 +1,59 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+use Net::OpenStack::Identity;
+use Net::OpenStack::Identity::Query;
+use Data::Dumper;
+
+
+my $identity= Net::OpenStack::Identity->new_from_env();
+
+my $res_version = $identity->get_version();
+
+my $query=Net::OpenStack::Identity::Query->new();
+#my $query=Net::OpenStack::Identity::Query->new(type=>'identity');
+$query->add('type','identity');
+
+#print Dumper($query->all);
+my $res_services = $identity->get_services('');
+#print Dumper($res_services);
+my $res_services2 = $identity->get_services($res_services->[0]->{id});
+#print Dumper($res_services2);
+
+my $res_service = $identity->get_services('', $query->all);
+#print Dumper($res_service);
+
+my $res_endpoints = $identity->get_endpoints( );
+my $query1=Net::OpenStack::Identity::Query->new();
+$query1->add('interface','public');
+$res_endpoints = $identity->get_endpoints($query1->all );
+#print Dumper($res_endpoints);
+
+my $tenants = $identity->get_projects('');
+my $query2=Net::OpenStack::Identity::Query->new();
+$query2->add('name','openstack');
+
+$tenants = $identity->get_projects('', $query2->all);
+#$tenants = $identity->delete_project('d0ddcb4a178d41e8bc99b1a37ebb2834');
+#print Dumper($tenants);
+
+#$tenants = $identity->add_project({ name => 'testprojekt4', description => 'ein testprojekt'} );
+
+
+my $query3=Net::OpenStack::Identity::Query->new();
+$query3->add('name','admin');
+my $users = $identity->get_users('', $query3->all);
+my $user1 = $identity->get_users($users->[0]->{id});
+print Dumper($user1);
+
+# this seems to not working ...
+my $res1= $identity->get_user_roles($users->[0]->{id});
+print Dumper($res1);
+$res1= $identity->get_user_groups($users->[0]->{id});
+print Dumper($res1);
+$res1= $identity->get_user_projects($users->[0]->{id});
+print Dumper($res1);
+
+
+

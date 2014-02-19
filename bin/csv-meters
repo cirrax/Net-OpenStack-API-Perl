@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use v5.10;
+use Net::OpenStack::Telemetry;
+
+use Text::CSV;
+
+sub output_csv {
+  my $res=$_[0];
+
+   while ((my $key, my $value) =each @$res[1]) {
+     print '"'. $key . '";';
+   }
+  print "\n";
+  foreach (@$res) {
+    while ((my $key, my $value) =each %$_) {
+      if ( defined($value)) {
+        print '"'. $value . '";';
+      } else {
+        print '"unset";';
+      }
+    }
+    print "\n";
+  }
+}
+
+
+my $telemetry= Net::OpenStack::Telemetry->new_from_env();
+
+my $res = $telemetry->get_meters('');
+
+&output_csv($res);
+
+
+
